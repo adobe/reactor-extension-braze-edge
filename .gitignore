@@ -1,0 +1,9 @@
+node_modules
+coverage
+test_results
+dist
+.sandbox
+.entries
+adobe-reactor-extension-braze-edge-*.tgz
+package-braze-connector-edge-*.zip
+.eslintcache

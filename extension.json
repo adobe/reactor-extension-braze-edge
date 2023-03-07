@@ -1,0 +1,195 @@
+{
+  "displayName": "Braze",
+  "name": "braze-connector-edge",
+  "iconPath": "resources/icons/braze-logo.svg",
+  "platform": "edge",
+  "version": "1.0.0",
+  "description": "Forward data to Braze by using the User Data API.",
+  "author": {
+    "name": "Adobe",
+    "url": "http://adobe.com"
+  },
+  "exchangeUrl": "",
+  "viewBasePath": "dist/",
+  "configuration": {
+    "viewPath": "configuration/configuration.html",
+    "schema": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "type": "object",
+      "properties": {
+        "restUrl": {
+          "type": "string",
+          "minLength": 1
+        },
+        "apiKey": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false,
+      "required": ["restUrl", "apiKey"]
+    }
+  },
+  "actions": [
+    {
+      "displayName": "Send Braze Event",
+      "name": "send-braze-event",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "user_identification": {
+            "type": "object",
+            "properties": {
+              "external_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "braze_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "user_alias": {
+                "type": "object",
+                "properties": {
+                  "alias_name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "alias_label": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "additionalProperties": false,
+                "required": ["alias_name", "alias_label"]
+              }
+            },
+            "additionalProperties": false
+          },
+          "event": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "app_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "time": {
+                "type": "string",
+                "minLength": 1
+              },
+              "properties": {
+                "type": "object"
+              }
+            },
+            "required": ["name", "time"],
+            "additionalProperties": false
+          },
+          "attributes": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      },
+      "libPath": "src/lib/actions/sendBrazeEvent.js",
+      "viewPath": "actions/sendBrazeEvent.html"
+    },
+    {
+      "displayName": "Send Braze Purchase Event",
+      "name": "send-braze-purchase-event",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "user_identification": {
+            "type": "object",
+            "properties": {
+              "external_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "braze_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "user_alias": {
+                "type": "object",
+                "properties": {
+                  "alias_name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "alias_label": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "additionalProperties": false,
+                "required": ["alias_name", "alias_label"]
+              }
+            },
+            "additionalProperties": false
+          },
+          "purchase": {
+            "type": "object",
+            "properties": {
+              "product_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "price": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^\\{\\{([^}]+)\\}\\}$"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "quantity": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^\\{\\{([^}]+)\\}\\}$"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
+              },
+              "currency": {
+                "type": "string",
+                "minLength": 1
+              },
+              "app_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "time": {
+                "type": "string",
+                "minLength": 1
+              },
+              "properties": {
+                "type": "object"
+              }
+            },
+            "required": ["product_id", "price", "currency", "time"],
+            "additionalProperties": false
+          },
+          "attributes": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      },
+      "libPath": "src/lib/actions/sendBrazePurchaseEvent.js",
+      "viewPath": "actions/sendBrazePurchaseEvent.html"
+    }
+  ]
+}
