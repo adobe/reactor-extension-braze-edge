@@ -84,8 +84,8 @@ describe('SendBrazePurchaseEvent view', () => {
           time: '123',
           product_id: 'ID123',
           currency: 'USD',
-          price: '100',
-          quantity: '5',
+          price: 100,
+          quantity: 5,
           properties: { a: 'b' }
         },
         attributes: {
@@ -174,8 +174,8 @@ describe('SendBrazePurchaseEvent view', () => {
         time: '123',
         product_id: 'ID222',
         currency: 'USD',
-        price: '123',
-        quantity: '13',
+        price: 123,
+        quantity: 13,
         properties: { a: 'b' }
       },
       attributes: {

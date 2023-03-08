@@ -30,8 +30,8 @@ describe('Send Braze Purchase Event module', () => {
       purchase: {
         time: '12345',
         product_id: 'ID123',
-        price: '123',
-        quantity: '12',
+        price: 123,
+        quantity: 12,
         currency: 'USD',
         properties: {
           'custom property': '1'
@@ -61,8 +61,8 @@ describe('Send Braze Purchase Event module', () => {
           '{' +
           '"time":"12345",' +
           '"product_id":"ID123",' +
-          '"price":"123",' +
-          '"quantity":"12",' +
+          '"price":123,' +
+          '"quantity":12,' +
           '"currency":"USD",' +
           '"properties":{"custom property":"1"},' +
           '"external_id":"external id"' +
