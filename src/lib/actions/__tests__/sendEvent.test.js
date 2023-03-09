@@ -11,7 +11,7 @@ governing permissions and limitations under the License.
 
 /* eslint-disable camelcase */
 
-const sendBrazeEvent = require('../sendEvent');
+const sendEvent = require('../sendEvent');
 const arc = {};
 
 describe('Send Braze Event module', () => {
@@ -45,7 +45,7 @@ describe('Send Braze Event module', () => {
       getExtensionSettings: () => extensionSettings
     };
 
-    return sendBrazeEvent({ arc, utils }).then(() => {
+    return sendEvent({ arc, utils }).then(() => {
       expect(fetch).toHaveBeenCalledWith('https://someurl.com/users/track', {
         method: 'POST',
         headers: {
