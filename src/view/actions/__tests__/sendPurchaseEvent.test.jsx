@@ -12,7 +12,7 @@ governing permissions and limitations under the License.
 import { screen } from '@testing-library/react';
 import renderView from '../../__tests_helpers__/renderView';
 
-import SendBrazeEvent from '../sendBrazeEvent';
+import SendBrazePurchaseEvent from '../sendPurchaseEvent';
 import createExtensionBridge from '../../__tests_helpers__/createExtensionBridge';
 
 import { changeInputValue } from '../../__tests_helpers__/jsDomHelpers';
@@ -41,22 +41,33 @@ const getFormFields = () => ({
   aliasLabelInput: screen.getByLabelText(/alias label/i, {
     selector: '[name="user_identification.user_alias.alias_label"]'
   }),
-  eventNameInput: screen.getByLabelText(/event name/i, {
-    selector: '[name="event.name"]'
+  productIdInput: screen.getByLabelText(/product id/i, {
+    selector: '[name="purchase.product_id"]'
   }),
-  eventTimeInput: screen.getByLabelText(/event time/i, {
-    selector: '[name="event.time"]'
+  currencyInput: screen.getByLabelText(/currency/i, {
+    selector: '[name="purchase.currency"]'
+  }),
+  priceInput: screen.getByLabelText(/price/i, {
+    selector: '[name="purchase.price"]'
+  }),
+  quantityInput: screen.getByLabelText(/quantity/i, {
+    selector: '[name="purchase.quantity"]'
+  }),
+  purchaseTimeInput: screen.getByLabelText(/purchase time/i, {
+    selector: '[name="purchase.time"]'
   }),
   appIdentifierInput: screen.getByLabelText(/app identifier/i, {
-    selector: '[name="event.app_id"]'
+    selector: '[name="purchase.app_id"]'
   }),
-  eventPropertiesRawTextarea: screen.getByLabelText(/event properties raw/i),
+  purchasePropertiesRawTextarea: screen.getByLabelText(
+    /purchase properties raw/i
+  ),
   userAttributesRawTextarea: screen.getByLabelText(/user attributes raw/i)
 });
 
-describe('SendBrazeEvent view', () => {
+describe('SendBrazePurchaseEvent view', () => {
   test('sets form values from settings', async () => {
-    renderView(SendBrazeEvent);
+    renderView(SendBrazePurchaseEvent);
 
     extensionBridge.init({
       settings: {
@@ -68,10 +79,13 @@ describe('SendBrazeEvent view', () => {
             alias_label: 'alias label'
           }
         },
-        event: {
+        purchase: {
           app_id: 'ios',
           time: '123',
-          name: 'event name',
+          product_id: 'ID123',
+          currency: 'USD',
+          price: 100,
+          quantity: 5,
           properties: { a: 'b' }
         },
         attributes: {
@@ -87,10 +101,13 @@ describe('SendBrazeEvent view', () => {
       brazeIdInput,
       aliasNameInput,
       aliasLabelInput,
-      eventNameInput,
-      eventTimeInput,
+      productIdInput,
+      priceInput,
+      currencyInput,
+      quantityInput,
+      purchaseTimeInput,
       appIdentifierInput,
-      eventPropertiesRawTextarea,
+      purchasePropertiesRawTextarea,
       userAttributesRawTextarea
     } = getFormFields();
 
@@ -98,17 +115,20 @@ describe('SendBrazeEvent view', () => {
     expect(brazeIdInput.value).toBe('braze id');
     expect(aliasNameInput.value).toBe('alias name');
     expect(aliasLabelInput.value).toBe('alias label');
-    expect(eventNameInput.value).toBe('event name');
-    expect(eventTimeInput.value).toBe('123');
+    expect(productIdInput.value).toBe('ID123');
+    expect(priceInput.value).toBe('100');
+    expect(currencyInput.value).toBe('USD');
+    expect(quantityInput.value).toBe('5');
+    expect(purchaseTimeInput.value).toBe('123');
     expect(appIdentifierInput.value).toBe('ios');
-    expect(eventPropertiesRawTextarea.value).toBe('{\n  "a": "b"\n}');
+    expect(purchasePropertiesRawTextarea.value).toBe('{\n  "a": "b"\n}');
     expect(userAttributesRawTextarea.value).toBe(
       '{\n  "first_name": "Alex",\n  "country": "US",\n  "custom": "value"\n}'
     );
   });
 
   test('sets settings from form values', async () => {
-    renderView(SendBrazeEvent);
+    renderView(SendBrazePurchaseEvent);
 
     extensionBridge.init();
 
@@ -117,10 +137,13 @@ describe('SendBrazeEvent view', () => {
       brazeIdInput,
       aliasNameInput,
       aliasLabelInput,
-      eventNameInput,
-      eventTimeInput,
+      productIdInput,
+      purchaseTimeInput,
+      priceInput,
+      currencyInput,
+      quantityInput,
       appIdentifierInput,
-      eventPropertiesRawTextarea,
+      purchasePropertiesRawTextarea,
       userAttributesRawTextarea
     } = getFormFields();
 
@@ -128,10 +151,13 @@ describe('SendBrazeEvent view', () => {
     await changeInputValue(brazeIdInput, 'braze id');
     await changeInputValue(aliasNameInput, 'alias name');
     await changeInputValue(aliasLabelInput, 'alias label');
-    await changeInputValue(eventNameInput, 'event');
-    await changeInputValue(eventTimeInput, '123');
+    await changeInputValue(productIdInput, 'ID222');
+    await changeInputValue(purchaseTimeInput, '123');
+    await changeInputValue(priceInput, '123');
+    await changeInputValue(currencyInput, 'USD');
+    await changeInputValue(quantityInput, '13');
     await changeInputValue(appIdentifierInput, 'ios');
-    await changeInputValue(eventPropertiesRawTextarea, '{{"a":"b"}');
+    await changeInputValue(purchasePropertiesRawTextarea, '{{"a":"b"}');
     await changeInputValue(userAttributesRawTextarea, '{{"a":"b"}');
 
     expect(extensionBridge.getSettings()).toEqual({
@@ -143,10 +169,13 @@ describe('SendBrazeEvent view', () => {
           alias_label: 'alias label'
         }
       },
-      event: {
+      purchase: {
         app_id: 'ios',
         time: '123',
-        name: 'event',
+        product_id: 'ID222',
+        currency: 'USD',
+        price: 123,
+        quantity: 13,
         properties: { a: 'b' }
       },
       attributes: {
@@ -156,16 +185,24 @@ describe('SendBrazeEvent view', () => {
   });
 
   test('handles form validation correctly', async () => {
-    renderView(SendBrazeEvent);
+    renderView(SendBrazePurchaseEvent);
 
     extensionBridge.init();
 
-    const { externalIdInput, eventNameInput, eventTimeInput } = getFormFields();
+    const {
+      externalIdInput,
+      productIdInput,
+      purchaseTimeInput,
+      currencyInput,
+      priceInput
+    } = getFormFields();
 
     await extensionBridge.validate();
 
     expect(externalIdInput).toHaveAttribute('aria-invalid', 'true');
-    expect(eventNameInput).toHaveAttribute('aria-invalid', 'true');
-    expect(eventTimeInput).toHaveAttribute('aria-invalid', 'true');
+    expect(productIdInput).toHaveAttribute('aria-invalid', 'true');
+    expect(purchaseTimeInput).toHaveAttribute('aria-invalid', 'true');
+    expect(priceInput).toHaveAttribute('aria-invalid', 'true');
+    expect(currencyInput).toHaveAttribute('aria-invalid', 'true');
   });
 });

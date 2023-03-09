@@ -11,7 +11,7 @@ governing permissions and limitations under the License.
 
 /* eslint-disable camelcase */
 
-const sendBrazeEvent = require('../sendBrazeEvent');
+const sendBrazeEvent = require('../sendEvent');
 const arc = {};
 
 describe('Send Braze Event module', () => {
