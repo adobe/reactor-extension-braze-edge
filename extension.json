@@ -1,6 +1,6 @@
 {
   "displayName": "Braze",
-  "name": "braze-connector-edge-preview",
+  "name": "braze-connector-edge",
   "iconPath": "resources/icons/braze-logo.svg",
   "platform": "edge",
   "version": "1.0.0",
