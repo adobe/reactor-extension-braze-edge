@@ -132,8 +132,8 @@ export default function EventDataSectionFields() {
                 that Braze supports.
               </p>
               <p>
+                Learn more about the{' '}
                 <Link>
-                  Learn more about the{' '}
                   <a
                     href="https://www.braze.com/docs/api/identifier_types/"
                     rel="noreferrer"
