@@ -11,6 +11,7 @@ governing permissions and limitations under the License.
 */
 
 import { addToEntityFromVariables } from '../../utils/entityVariablesConverter';
+import { isString } from '../../utils/validators';
 import userAttributesComboboxFields from './userAttributesComboboxFields';
 
 const { getUserAttributeId } = userAttributesComboboxFields;
@@ -43,10 +44,14 @@ export default ({
   }
 
   if (data) {
-    settings.attributes = Object.entries(data).reduce((acc, [k, v]) => {
-      acc[getUserAttributeId(k)] = v;
-      return acc;
-    }, {});
+    if (isString(data)) {
+      settings.attributes = data;
+    } else {
+      settings.attributes = Object.entries(data).reduce((acc, [k, v]) => {
+        acc[getUserAttributeId(k)] = v;
+        return acc;
+      }, {});
+    }
   }
 
   return settings;

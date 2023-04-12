@@ -27,3 +27,6 @@ export const isValidJson = (value) => {
 };
 
 export const isDataElementToken = (value) => /^{{([^}]+)}}$/.test(value);
+
+export const isString = (value) =>
+  typeof value === 'string' || value instanceof String;

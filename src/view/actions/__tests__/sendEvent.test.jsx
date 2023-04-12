@@ -155,6 +155,20 @@ describe('SendBrazeEvent view', () => {
     });
   });
 
+  test('handles data element token inside the user attributes text area', async () => {
+    renderView(SendBrazeEvent);
+
+    extensionBridge.init();
+
+    const { userAttributesRawTextarea } = getFormFields();
+
+    await changeInputValue(userAttributesRawTextarea, '{{{{AAA}}');
+
+    expect(extensionBridge.getSettings()).toEqual({
+      attributes: '{{AAA}}'
+    });
+  });
+
   test('handles form validation correctly', async () => {
     renderView(SendBrazeEvent);
 
