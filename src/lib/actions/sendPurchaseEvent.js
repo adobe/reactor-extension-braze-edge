@@ -18,7 +18,9 @@ const buildFetchObject = ({
   purchase,
   attributes
 }) => {
-  const body = {};
+  const body = {
+    partner: 'adobe'
+  };
 
   if (purchase) {
     body.purchases = [

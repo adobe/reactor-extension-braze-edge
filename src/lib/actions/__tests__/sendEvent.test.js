@@ -54,6 +54,7 @@ describe('Send Braze Event module', () => {
         },
         body:
           '{' +
+          '"partner":"adobe",' +
           '"events":[' +
           '{' +
           '"time":"12345",' +

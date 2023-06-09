@@ -57,6 +57,7 @@ describe('Send Braze Purchase Event module', () => {
         },
         body:
           '{' +
+          '"partner":"adobe",' +
           '"purchases":[' +
           '{' +
           '"time":"12345",' +

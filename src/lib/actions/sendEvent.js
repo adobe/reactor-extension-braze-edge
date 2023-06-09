@@ -18,7 +18,9 @@ const buildFetchObject = ({
   event,
   attributes
 }) => {
-  const body = {};
+  const body = {
+    partner: 'adobe'
+  };
 
   if (event) {
     body.events = [
