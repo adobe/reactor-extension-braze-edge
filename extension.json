@@ -3,7 +3,7 @@
   "name": "braze-connector-edge",
   "iconPath": "resources/icons/braze-logo.svg",
   "platform": "edge",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Forward data to Braze by using the User Data API.",
   "author": {
     "name": "Adobe",
